@@ -13,6 +13,17 @@ import { TBMegaMenu } from './plugin.js';
   const focusableSelector =
     'a:not([disabled]):not([tabindex="-1"]), button:not([disabled]):not([tabindex="-1"]), input:not([disabled]):not([tabindex="-1"]), select:not([disabled]):not([tabindex="-1"]), textarea:not([disabled]):not([tabindex="-1"]), details:not([disabled]):not([tabindex="-1"]), [tabindex]:not([disabled]):not([tabindex="-1"])';
 
+  const throttle = function (func, timeFrame) {
+    var lastTime = 0;
+    return function (...args) {
+      var now = new Date();
+      if (now - lastTime >= timeFrame) {
+        func(...args);
+        lastTime = now;
+      }
+    };
+  };
+
   // On load and on resize set the mobile class and get the list of top level links.
   const updateTBMenus = () => {
     document.querySelectorAll('.tbm').forEach((thisMenu) => {
@@ -32,7 +43,7 @@ import { TBMegaMenu } from './plugin.js';
       focusable = [...focusable];
 
       let topLevel = thisMenu.querySelectorAll(
-        '.tbm-link.level-1, .tbm-link.level-1 + .tbm-submenu-toggle',
+        '.tbm-link.level-1, .tbm-link.level-1 + .tbm-submenu-toggle'
       );
       topLevel = [...topLevel];
       topLevel = topLevel.filter((element) => {
@@ -45,7 +56,7 @@ import { TBMegaMenu } from './plugin.js';
     });
   };
 
-  const throttled = _.throttle(updateTBMenus, 100);
+  const throttled = throttle(updateTBMenus, 100);
 
   // Run the the throttled code on load and on resize.
   ['load', 'resize'].forEach((event) => {

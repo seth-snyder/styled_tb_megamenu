@@ -8,3 +8,4 @@ dist/base.js
 dist/colors.js
 dist/styles.js
 dist/js/plugin.js
+patches/*

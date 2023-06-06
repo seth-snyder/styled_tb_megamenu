@@ -26,6 +26,7 @@ use Drupal\Component\Utility\Html;
  *   entity_keys = {
  *     "id" = "id",
  *     "menu" = "menu",
+ *     "theme" = "theme",
  *   },
  *   config_export = {
  *     "id",
@@ -47,35 +48,35 @@ class MegaMenuConfig extends ConfigEntityBase implements MegaMenuConfigInterface
    *
    * @var string
    */
-  public $id;
+  public string $id;
 
   /**
    * The related menu machine name.
    *
    * @var string
    */
-  public $menu;
+  public string $menu;
 
   /**
    * The related theme name.
    *
    * @var string
    */
-  public $theme;
+  public string $theme;
 
   /**
    * The json encoded string of block settings.
    *
    * @var string
    */
-  public $block_config;
+  public string $block_config;
 
   /**
    * The json encoded string of menu settings.
    *
    * @var string
    */
-  public $menu_config;
+  public string $menu_config;
 
   /**
    * {@inheritdoc}
@@ -92,7 +93,7 @@ class MegaMenuConfig extends ConfigEntityBase implements MegaMenuConfigInterface
    *
    * @see \Drupal\tb_megamenu\MegaMenuConfigInterface::setMenu()
    */
-  public function setMenu($menuName) {
+  public function setMenu(string $menuName): void {
     if (!isset($this->id)) {
       $this->id = $menuName;
     }
@@ -104,8 +105,8 @@ class MegaMenuConfig extends ConfigEntityBase implements MegaMenuConfigInterface
    *
    * @see \Drupal\tb_megamenu\MegaMenuConfigInterface::setTheme()
    */
-  public function setTheme($themeName) {
-    if (isset($this->id) && isset($this->menu) && $this->id == $this - menu) {
+  public function setTheme(string $themeName): void {
+    if (isset($this->id) && isset($this->menu) && $this->id == $this->menu) {
       $this->id = $this->id . '__' . $themeName;
     }
     $this->theme = $themeName;
@@ -116,7 +117,7 @@ class MegaMenuConfig extends ConfigEntityBase implements MegaMenuConfigInterface
    *
    * @see \Drupal\tb_megamenu\MegaMenuConfigInterface::getBlockConfig()
    */
-  public function getBlockConfig() {
+  public function getBlockConfig(): object|array {
     if (is_array($this->block_config)) {
       $this->setBlockConfig($this->block_config);
       \Drupal::logger('tb_megamenu')->info("Converted block config array to json string.");
@@ -146,7 +147,7 @@ class MegaMenuConfig extends ConfigEntityBase implements MegaMenuConfigInterface
    *
    * @see \Drupal\tb_megamenu\MegaMenuConfigInterface::getMenuConfig()
    */
-  public function getMenuConfig() {
+  public function getMenuConfig(): array {
     if (is_array($this->menu_config)) {
       $this->setMenuConfig($this->menu_config);
       \Drupal::logger('tb_megamenu')->info("Converted menu config array to json string.");
@@ -183,7 +184,7 @@ class MegaMenuConfig extends ConfigEntityBase implements MegaMenuConfigInterface
    *
    * @see \Drupal\tb_megamenu\MegaMenuConfigInterface::setBlockConfig()
    */
-  public function setBlockConfig($blockConfig) {
+  public function setBlockConfig(object|array $blockConfig): void {
     $this->block_config = Json::encode($blockConfig);
   }
 
@@ -192,7 +193,7 @@ class MegaMenuConfig extends ConfigEntityBase implements MegaMenuConfigInterface
    *
    * @see \Drupal\tb_megamenu\MegaMenuConfigInterface::setMenuConfig()
    */
-  public function setMenuConfig($menuConfig) {
+  public function setMenuConfig(object|array $menuConfig): void {
     $this->menu_config = Json::encode($menuConfig);
   }
 
@@ -201,10 +202,10 @@ class MegaMenuConfig extends ConfigEntityBase implements MegaMenuConfigInterface
    *
    * @see \Drupal\tb_megamenu\MegaMenuConfigInterface::loadMenu()
    */
-  public static function loadMenu($menu, $theme) {
+  public static function loadMenu(string $menu, string $theme): mixed {
     $id = "{$menu}__{$theme}";
-    $config = self::load($id);
-    return $config;
+
+    return self::load($id);
   }
 
   /**
