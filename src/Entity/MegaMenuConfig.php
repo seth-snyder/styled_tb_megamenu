@@ -79,6 +79,13 @@ class MegaMenuConfig extends ConfigEntityBase implements MegaMenuConfigInterface
   public string $menu_config;
 
   /**
+   * Flags used for encoding JSON values.
+   *
+   * Using JSON_PRETTY_PRINT makes it readable in config files.
+   */
+  const JSON_ENCODE_FLAGS = JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_PRETTY_PRINT;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(array $values = []) {
@@ -185,7 +192,7 @@ class MegaMenuConfig extends ConfigEntityBase implements MegaMenuConfigInterface
    * @see \Drupal\tb_megamenu\MegaMenuConfigInterface::setBlockConfig()
    */
   public function setBlockConfig(object|array $blockConfig): void {
-    $this->block_config = Json::encode($blockConfig);
+    $this->block_config = json_encode($blockConfig, self::JSON_ENCODE_FLAGS);
   }
 
   /**
@@ -194,7 +201,7 @@ class MegaMenuConfig extends ConfigEntityBase implements MegaMenuConfigInterface
    * @see \Drupal\tb_megamenu\MegaMenuConfigInterface::setMenuConfig()
    */
   public function setMenuConfig(object|array $menuConfig): void {
-    $this->menu_config = Json::encode($menuConfig);
+    $this->menu_config = json_encode($menuConfig, self::JSON_ENCODE_FLAGS);
   }
 
   /**
