@@ -1,6 +1,4 @@
 export class TBMegaMenu {
-  'use strict';
-
   constructor(id) {
     this.id = id;
     this.navParent = document.getElementById(this.id);
