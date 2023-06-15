@@ -173,7 +173,17 @@ class MegaMenuConfig extends ConfigEntityBase implements MegaMenuConfigInterface
       $config[$key]['item_config']['class'] =  isset($value['item_config']['class']) ? Html::escape($value['item_config']['class']) :'';
       $config[$key]['item_config']['xicon'] =  isset($value['item_config']['xicon']) ? Html::escape($value['item_config']['xicon']) : '';
       $config[$key]['item_config']['label'] =  isset($value['item_config']['label']) ? Html::escape($value['item_config']['label']) : '';
-      $config[$key]['item_config']['caption'] = isset($value['item_config']['caption']) ? Xss::filter($value['item_config']['caption']) : '';
+
+      $caption = $value['item_config']['caption'] ?? NULL;
+      if (is_string($caption)) {
+        $config[$key]['item_config']['caption'] = Xss::filter($caption);
+      }
+      elseif (is_array($caption)) {
+        $config[$key]['item_config']['caption'] = Xss::filter($caption['#plain_text']);
+      }
+      else {
+        $config[$key]['item_config']['caption'] = '';
+      }
     }
 
     if ($config === NULL) {
