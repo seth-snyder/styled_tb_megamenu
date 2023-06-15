@@ -178,7 +178,7 @@ class MegaMenuConfig extends ConfigEntityBase implements MegaMenuConfigInterface
       if (is_string($caption)) {
         $config[$key]['item_config']['caption'] = Xss::filter($caption);
       }
-      elseif (is_array($caption)) {
+      elseif (is_array($caption) && !empty($caption['#plain_text'])) {
         $config[$key]['item_config']['caption'] = Xss::filter($caption['#plain_text']);
       }
       else {
